@@ -60,6 +60,7 @@ Plug 'tpope/vim-fugitive', { 'commit': '444ba9fda5d05aa14c7e8664fa4a66a59c62a550
 " Themes
 Plug 'altercation/vim-colors-solarized'
 Plug 'icymind/NeoSolarized'
+Plug 'rakr/vim-one'
 
 " Testing
 Plug 'janko-m/vim-test'

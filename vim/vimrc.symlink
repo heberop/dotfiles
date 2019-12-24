@@ -1,5 +1,5 @@
 " 
-" Vim settings for @mscoutermarsh
+" Vim settings for @heberop
 "
 
 " Settings in this file may depend on plugins, so let's install them first.
@@ -59,15 +59,15 @@ set wildignore+=*/node_modules/
 " Interface
 "-------------------------------------------------------------------------------
 
-set number            " Enable line numbers
-set scrolloff=5       " Leave 5 lines of buffer when scrolling
-set sidescrolloff=10  " Leave 10 characters of horizontal buffer when scrolling
+set number relativenumber " Enable line numbers
+set scrolloff=5           " Leave 5 lines of buffer when scrolling
+set sidescrolloff=10      " Leave 10 characters of horizontal buffer when scrolling
 
 "-------------------------------------------------------------------------------
 " Colors & Formatting
 "-------------------------------------------------------------------------------
 
-colorscheme solarized
+colorscheme one
 set background=dark
 
 " Showcase comments in italics

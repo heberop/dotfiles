@@ -1,24 +1,39 @@
 [user]
   name = AUTHOR_NAME
   email = AUTHOR_EMAIL
-  signingkey = GPG_SIGNING_KEY
 [github]
   user = AUTHOR_HANDLE
 [credential]
   helper = GIT_CREDENTIAL_HELPER
 [alias]
-  br = branch
-  p = add -p
-  co = checkout
-  ci = commit
-  coi = !git for-each-ref --sort=-committerdate --format='%(refname:short) (%(committerdate:relative))' refs/heads | fzf --reverse --nth=1 --preview 'git log --patch --color {1}...{1}~5' | awk '{print $1}' | xargs git checkout
   st = status
-  staged = diff --staged
+  ci = commit
+  co = checkout
+  br = branch
+  fixup = commit --all --amend --no-edit
+  un = !GIT_CURRENT_BRANCH=$(git name-rev --name-only HEAD) && git log origin/$GIT_CURRENT_BRANCH..$GIT_CURRENT_BRANCH    
+  pend=!GIT_CURRENT_BRANCH=$(git name-rev --name-only HEAD) && git log ..origin/$GIT_CURRENT_BRANCH
+  
+  # http://haacked.com/archive/2014/07/28/github-flow-aliases/
+  ec = config --global -e
+  up = !git pull --rebase --prune $@ && git submodule update --init --recursive
+  cob = checkout -b
+  cm = !git add -A && git commit -m
+  save = !git add -A && git commit -m 'SAVEPOINT'
+  wip = !git add -u && git commit -m "WIP" 
+  undo = reset HEAD~1 --mixed
+  amend = commit -a --amend
+  wipe = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
+  bclean = "!f() { git branch --merged ${1-master} | grep -v " ${1-master}$" | xargs -r git branch -d; }; f"
+  bdone = "!f() { git checkout ${1-master} && git up && git bclean ${1-master}; }; f"
+  prev = "!sh -c 'git checkout HEAD^1 | git clean -fd'"
+  next = "!sh -c 'git log --reverse --pretty=%H master | awk \"/$(git rev-parse HEAD)/{getline;print}\" | xargs git checkout'" | git clean -fd
+  first = "!sh -c 'git checkout tags/start | git clean -fd'"
 [color]
-  diff = auto
-  status = auto
-  branch = auto
-  ui = auto
+  diff = always
+  interactive = always
+  status = always
+  branch = always
 [core]
   excludesfile = ~/.gitignore
   editor = nvim
@@ -29,6 +44,12 @@
 [push]
   default = upstream
 [commit]
-  gpgsign = true
+  gpgsign = false
+  template = ~/.gitmessage
 [hub]
   protocol = https
+[log]
+  decorate = full
+  abbrevCommit = true
+[format]
+  pretty=format:%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset

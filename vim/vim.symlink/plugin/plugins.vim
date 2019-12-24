@@ -34,9 +34,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 " Syntax highlighting
-Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-rails'
 Plug 'elzr/vim-json'
 Plug 'tpope/vim-markdown'
 Plug 'groenewege/vim-less'
@@ -44,7 +42,6 @@ Plug 'tpope/vim-haml'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'jparise/vim-graphql'
-Plug 'zerowidth/vim-copy-as-rtf'
 Plug 'leafgarland/typescript-vim'
 
 " Syntax errors

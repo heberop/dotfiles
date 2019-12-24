@@ -96,7 +96,7 @@ let g:auto_save_in_insert_mode = 0 " do not save in insert mode
 if has('nvim')
   let $NVIM_TUI_ENABLE_TRUE_COLOR=1
   set termguicolors
-  colorscheme NeoSolarized
+  colorscheme one
   set background=dark
 
   " Fix vim-tmux-navigator <C-h> https://git.io/viGRU

@@ -1,120 +1,94 @@
-# Bind escape to copy mode
-unbind [
-bind Escape copy-mode
+# -----------------------------------------------------------------------------
+# This config is targeted for tmux 2.1+ and should be placed in $HOME.
+#
+# Read the "Plugin Manager" section (bottom) before trying to use this config!
+# -----------------------------------------------------------------------------
 
-# p = paste
-unbind p
-bind p paste-buffer
+# -----------------------------------------------------------------------------
+# Global options
+# -----------------------------------------------------------------------------
 
-# no escape delay
-set -sg escape-time 0
+# Set a new prefix / leader key.
+set -g prefix `
+bind ` send-prefix
 
-# remap prefix to Control + a
-set -g prefix C-a
-unbind C-b
-bind C-a send-prefix
+# Allow opening multiple terminals to view the same session at different sizes.
+setw -g aggressive-resize on
 
-# Start window numbering at 1 (default => 0)
-set -g base-index 1
+# Remove delay when switching between Vim modes.
+set -sg escape-time 10
 
-set -g clock-mode-style 12
+# Allow Vim's FocusGained to work when your terminal gains focus.
+#   Requires Vim plugin: https://github.com/tmux-plugins/vim-tmux-focus-events
+set -g focus-events on
 
-# Renumber windows after removing one
-set -g renumber-windows on
-
-# use 256 colors
-# set -g default-terminal 'tmux-256color-italic'
-set-option -ga terminal-overrides ",xterm-256color-italic:Tc"
-set -g default-terminal "tmux-256color-italic"
-
-
-# change tmux bar colors
-set -g status-bg '#666666'
-set -g status-fg '#aaaaaa'
-
-# Keep plenty of history for scrollback
+# Add a bit more scroll history in the buffer.
 set -g history-limit 50000
 
-# mouse
+# Enable color support inside of tmux.
+set -g default-terminal "screen-256color"
+
+# Ensure window titles get renamed automatically.
+setw -g automatic-rename
+
+# Ensure window index numbers get reordered on delete.
+set-option -g renumber-windows on
+
+# Start windows and panes index at 1, not 0.
+set -g base-index 1
+setw -g pane-base-index 1
+
+# Enable full mouse support.
 set -g mouse on
 
-bind m split-window -h 'reattach-to-user-namespace mutt'
+# Status bar optimized for Gruvbox.
+set -g status-fg colour244
+set -g status-bg default
+set -g status-left ''
+set -g status-right-length 0
+#set -g status-right-length 20
+#set -g status-right '%a %Y-%m-%d %H:%M'
 
-# Act like vim in copy mode
-set -g status-keys vi
-setw -g mode-keys vi
-bind-key -Tcopy-mode-vi 'v' send -X begin-selection
-bind-key -Tcopy-mode-vi 'y' send -X copy-pipe-and-cancel "reattach-to-user-namespace pbcopy"
+set -g pane-border-style fg=default,bg=default
+set -g pane-active-border-style fg=colour250,bg=default
 
-# Smart pane switching with awareness of Vim splits.
-# See: https://github.com/christoomey/vim-tmux-navigator
-is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
-    | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
-bind-key -n C-h if-shell "$is_vim" "send-keys C-h"  "select-pane -L"
-bind-key -n C-j if-shell "$is_vim" "send-keys C-j"  "select-pane -D"
-bind-key -n C-k if-shell "$is_vim" "send-keys C-k"  "select-pane -U"
-bind-key -n C-l if-shell "$is_vim" "send-keys C-l"  "select-pane -R"
-bind-key -n C-\ if-shell "$is_vim" "send-keys C-\\" "select-pane -l"
+set-window-option -g window-status-current-style fg=colour223,bold
 
-# Secondary binding for C-l to retain redraw
-bind C-l send-keys 'C-l'
+# -----------------------------------------------------------------------------
+# Key bindings
+# -----------------------------------------------------------------------------
 
-# Easy rotating of panes
-bind C-k swap-pane -U
+# Unbind default keys
+unbind C-b
+unbind '"'
+unbind %
 
-# increase display time
-set -g display-panes-time 1200
+# Reload the tmux config.
+bind-key r source-file ~/.tmux.conf
 
-# status bar stuff
-set -g status-left-length 40
+# Split panes.
+bind-key h split-window -v
+bind-key v split-window -h
 
-# Simplify status bar display.
-set -g status-left '[#S]'
-set -g status-right "%I:%M %p "
-# set -g status-right "#[fg=red][44%%]#[default]   -  %I:%M %p "
+# Move around panes with ALT + arrow keys.
+bind-key -n M-Up select-pane -U
+bind-key -n M-Left select-pane -L
+bind-key -n M-Down select-pane -D
+bind-key -n M-Right select-pane -R
 
-# Dismiss current pane to background window
-bind b break-pane -d
-bind-key j command-prompt -p "join pane from: "  "join-pane -h -s '%%'"
+# -----------------------------------------------------------------------------
+# Plugin Manager - https://github.com/tmux-plugins/tpm
+# In order to use the plugins below you need to install TPM and the plugins.
+#   Step 1) git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+#   Step 2) Reload tmux if it's already started with `r
+#   Step 3) Launch tmux and hit `I (capital i) to fetch any plugins
+# -----------------------------------------------------------------------------
 
-# more intuitive keybindings for splitting
-bind \ split-window -h -c "#{pane_current_path}"
-bind - split-window -v -c "#{pane_current_path}"
+# List of plugins.
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-yank'
 
-# Easy return to Vim from tmux runner zoom runner pane
-bind C-p run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim$' && tmux send-keys ':VtrZoomRunnerPane' 'C-m') || tmux send-keys 'C-c' && tmux select-pane -l"
+# Initialize TPM (keep this line at the very bottom of your tmux.conf).
+run -b '~/.tmux/plugins/tpm/tpm'
 
-# Make C-j display a selectable list of sessions
-bind C-j choose-tree
-
-# Keep window names as I set them
-setw -g automatic-rename off
-
-# Reload tmux.conf with prefix-r
-bind C-r source-file ~/.tmux.conf \; display "Reloaded ~/.tmux.conf"
-
-# Provide access to the clipboard for pbpaste, pbcopy (details: http://goo.gl/DN82E)
-set-option -g default-command "reattach-to-user-namespace -l zsh -l"
-set-window-option -g automatic-rename on
-
-# Enable VI mode
-set-window-option -g mode-keys vi
-
-# Set ability to capture on start and restore on exit window data when running an application
-setw -g alternate-screen on
-
-# bind resizing of panes to H,J,K,L (resizes by steps of 10 lines/columns)
-# # Note, bindings are repeatable (within the default 500ms time limit) so that
-# # you don't have to keep entering the prefix. (Prefix-H-H-H resizes by 15)
-bind -n S-Left resize-pane -L 2
-bind -n S-Right resize-pane -R 2
-bind -n S-Down resize-pane -D 1
-bind -n S-Up resize-pane -U 1
-unbind -n C-Left
-unbind -n C-Down
-unbind -n C-Up
-unbind -n C-Right
-bind -n C-Left resize-pane -L 10
-bind -n C-Right resize-pane -R 10
-bind -n C-Down resize-pane -D 5
-bind -n C-Up resize-pane -U 5

@@ -67,8 +67,8 @@ set sidescrolloff=10      " Leave 10 characters of horizontal buffer when scroll
 " Colors & Formatting
 "-------------------------------------------------------------------------------
 
-colorscheme one
-set background=dark
+" colorscheme one
+" set background=dark
 
 " Showcase comments in italics
 highlight Comment cterm=italic gui=italic
@@ -96,8 +96,8 @@ let g:auto_save_in_insert_mode = 0 " do not save in insert mode
 if has('nvim')
   let $NVIM_TUI_ENABLE_TRUE_COLOR=1
   set termguicolors
-  colorscheme one
-  set background=dark
+  " colorscheme one
+  " set background=dark
 
   " Fix vim-tmux-navigator <C-h> https://git.io/viGRU
   nmap <BS> <C-W>h

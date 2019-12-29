@@ -98,3 +98,6 @@ fi
 cd ~
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export PATH="/home/heber/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"

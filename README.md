@@ -1,8 +1,8 @@
-![dotfiles](https://raw.githubusercontent.com/mscoutermarsh/dotfiles/master/autobot.jpg)
+![dotfiles](https://raw.githubusercontent.com/heberop/dotfiles/master/autobot.jpg)
 
 dotfiles
 ===================
-![screenshot](https://github.com/mscoutermarsh/dotfiles/blob/master/screenshot.png)
+![screenshot](https://github.com/heberop/dotfiles/blob/master/screenshot.png)
 (Here's what my setup looks like. Vim/Tmux)
 
 ## New to Vim?
@@ -17,7 +17,7 @@ If you have trouble during installation, please open an issue or pull request. :
 
 Clone this repo (or your own fork!) to your **home** directory (`/Users/username`).
 ```
-git clone https://github.com/mscoutermarsh/dotfiles ~/.dotfiles
+git clone https://github.com/heberop/dotfiles ~/.dotfiles
 cd ~/.dotfiles
 ./install
 ```

@@ -7,6 +7,7 @@ alias sb="osascript ~/.dotfiles/SpotifyControl/SpotifyControl start spotify:trac
 # Unix
 alias tlf="tail -f"
 alias ln='ln -v'
+alias ll='ls -la'
 alias mkdir='mkdir -p'
 alias ...='../..'
 alias -g G='| grep'
@@ -14,9 +15,6 @@ alias -g M='| less'
 alias -g ONE="| awk '{ print \$1}'"
 alias e="$EDITOR"
 alias v="$VISUAL"
-# because typing is hard
-alias bim="nvim"
-alias vim="nvim"
 
 alias :w="echo this isn\'t vim 🌟"
 alias :q='exit'
@@ -26,12 +24,16 @@ alias g='git'
 alias gs='git status -sb'
 alias st='git status'
 alias log='git log'
+alias fetch='git fetch'
+alias pull='git pull'
 # copy the current branch name
 alias gcb='git rev-parse --abbrev-ref HEAD | pbcopy'
 # because i make this typo a lot
 alias ggs='gs'
 
 # kubernetes
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+
 alias k='kubectl'
 alias kgp='kubectl get pod'
 alias kgd='kubectl get deploy'
@@ -44,6 +46,7 @@ alias kds='kubectl describe svc'
 alias vimrc="vim ~/.vimrc"
 alias vimplugins="vim ~/.dotfiles/vim/vim.symlink/plugin/plugins.vim"
 alias zshrc="vim ~/.zshrc"
+alias bashrc="vim ~/.bashrc"
 alias gitconfig="vim ~/.gitconfig"
 
 # WSL
